@@ -1,0 +1,211 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "IPL Fantasy Auction Team Builder (Frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add Internet Identity login UI, require authentication before showing any app data, and scope all visible data to the authenticated principal (including first-time user profile name setup).",
+      "acceptanceCriteria": [
+        "A user can sign in with Internet Identity and see only their own teams and selections.",
+        "Signing out and signing in as a different identity shows a different set of teams (no data leakage)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the main App component (imported by frontend/src/main.tsx) that uses the authorization component’s Internet Identity flow (useInternetIdentity hook) to gate the entire application behind login, and ensures all data queries are only enabled when authenticated. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a Login/Logout button using the authorization component guidance (useInternetIdentity + React Query cache clearing on logout). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AuthGate.tsx",
+          "operation": "create",
+          "description": "Create an AuthGate wrapper that blocks all app content until the user is authenticated (and shows an English login prompt + LoginButton). Use the authorization component requirement that users must be logged in before seeing any application data. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a first-login profile setup dialog that calls getCallerUserProfile() and prompts for an English display name when missing, then saves via saveCallerUserProfile(). Follow the authorization component guidance to prevent modal flash (actor dependency-aware loading). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUserProfile.ts",
+          "operation": "create",
+          "description": "Add a React Query hook to fetch the current user profile via getCallerUserProfile() using useActor(), with loading state shaped to avoid profile-setup modal flash (per authorization component guidance). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUserRole.ts",
+          "operation": "create",
+          "description": "Add a React Query hook to fetch getCallerUserRole() for role-aware UI decisions (even if admin UI is not introduced). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useScopedTeams.ts",
+          "operation": "create",
+          "description": "Create a hook that fetches only the authenticated user’s teams using getUserTeams(identity.getPrincipal()) and disables the query until authenticated to prevent any cross-user leakage. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Enforce the exactly-11-players roster rule in the UI with clear validation, and show the current selected count (e.g., 8/11).",
+      "acceptanceCriteria": [
+        "UI prevents finalizing/saving a roster unless it contains exactly 11 players (or shows an explicit error message).",
+        "Backend rejects any roster updates that would result in a team having fewer than 11 or more than 11 players (with a clear error type/message).",
+        "A team details view shows the current count (e.g., “8/11 selected”)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/teams/TeamWizard.tsx",
+          "operation": "create",
+          "description": "Implement the wizard UI state with a persistent roster counter display (e.g., “X/11 selected”), and disable the final confirm action until exactly 11 players are selected; show an explicit English error message when the user attempts to confirm with fewer/more. Use shadcn-ui components (e.g., Button, Card, Dialog/AlertDialog) by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/teams/RosterReview.tsx",
+          "operation": "create",
+          "description": "Create a roster review step that lists selected players, displays the count (X/11), and provides remove/replace affordances; wire validation messaging for not-exactly-11. Use shadcn-ui list/table primitives by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useTeamValidation.ts",
+          "operation": "create",
+          "description": "Add a hook that calls validateTeam(teamId) to surface backend validation failures in the UI on confirm, and maps failures to clear English messages. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Display per-player points and computed team total points across player lists and team views, updating totals after roster changes.",
+      "acceptanceCriteria": [
+        "Each player displays a points value in the player list and within the team roster.",
+        "Each team displays a total points value computed from its 11 selected players.",
+        "Points totals update after roster changes (add/remove players)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/players/PlayerList.tsx",
+          "operation": "create",
+          "description": "Create a player list UI that shows each player’s totalPoints and selection state; when users add/remove players, immediately reflect points and selection counts in the UI. Use shadcn-ui components (Input, Select, Badge, Button, Card) by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/teams/TeamCard.tsx",
+          "operation": "create",
+          "description": "Create a team summary card that displays team name, totalPoints, and roster count; used in the manage teams view. Use shadcn-ui components by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/usePlayers.ts",
+          "operation": "create",
+          "description": "Add a React Query hook to fetch getAllPlayers() and provide lookup helpers for points display in rosters. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/points.ts",
+          "operation": "create",
+          "description": "Add utility functions to compute a team’s total points from selected players on the frontend (for instant UI updates), while also displaying backend-provided totals when available."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Build a step-by-step workflow UI: create team, browse/filter/search & select players, review (must be 11) and confirm, then view/manage existing teams.",
+      "acceptanceCriteria": [
+        "There is a clear navigation flow that guides users through team creation, player selection, and review/confirmation.",
+        "Users can search and filter players (at minimum by name and role).",
+        "Users can remove players from the roster and replace them before confirming."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/teams/CreateTeamStep.tsx",
+          "operation": "create",
+          "description": "Create step (1) UI to input a team name and create via createFantasyTeam(teamName); on success, advance the wizard. Use shadcn-ui Form/Input/Button components by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/players/PlayerFilters.tsx",
+          "operation": "create",
+          "description": "Create step (2) filter/search controls: text search by name and role filter (Role enum) and pass filtered results to PlayerList. Use shadcn-ui Input/Select components by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/teams/ManageTeamsView.tsx",
+          "operation": "create",
+          "description": "Create step (4) manage view listing the authenticated user’s teams (from useScopedTeams) with ability to open a selected team in the wizard for viewing/updating roster. Keep all text in English. Use shadcn-ui components by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useTeamMutations.ts",
+          "operation": "create",
+          "description": "Add React Query mutations for createFantasyTeam() and addPlayerToTeam(), with query invalidation/refetch so the wizard and manage view stay in sync after changes. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create a header that shows the app logo, current user display name (from profile), and LoginButton; also provides simple navigation between “Build Team” (wizard) and “My Teams” (manage view) without introducing unnecessary routes. Use shadcn-ui components by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the complete flow together: AuthGate -> ProfileSetupDialog (when needed) -> AppHeader -> main content area switching between TeamWizard and ManageTeamsView. Ensure player search/filter and roster review/confirm are reachable and not orphaned. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a consistent cricket/league visual theme across the app with a non-blue/purple primary palette.",
+      "acceptanceCriteria": [
+        "All primary UI surfaces (header, buttons, cards, tables/lists) follow one coherent theme.",
+        "Primary color scheme is not blue/purple-dominant.",
+        "Design is consistent across login, team creation, player selection, and team views."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styling and Tailwind CSS variables for a warm sporty palette (e.g., orange/amber + neutral/charcoal + field-green accents) ensuring primary is not blue/purple-dominant. Apply consistent typography, spacing, and surface styling used across all views."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust/extend theme tokens if needed to support the warm sporty palette and consistent UI surfaces (while keeping existing shadcn-ui token structure)."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "create",
+          "description": "Create a layout wrapper that applies consistent page spacing, background styling, and content max-width across login, wizard, and manage teams views. Use shadcn-ui components by composition only; do not edit frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap all pages/views in AppShell so theme/layout is applied consistently across authenticated and unauthenticated screens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add and reference generated static images (logo and hero illustration) from frontend/public/assets/generated in the UI.",
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated with the specified filenames.",
+        "UI references these images via static paths (no backend image serving)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/ipl-fantasy-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated cricket-themed app logo image asset at the exact path: frontend/public/assets/generated/ipl-fantasy-logo.dim_512x512.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/cricket-stadium-hero.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated stadium hero illustration image asset at the exact path: frontend/public/assets/generated/cricket-stadium-hero.dim_1600x900.png."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Reference and render the static logo image from frontend/public/assets/generated/ipl-fantasy-logo.dim_512x512.png within the header branding (no backend image serving)."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Reference the hero illustration from frontend/public/assets/generated/cricket-stadium-hero.dim_1600x900.png as a decorative hero/background element for the authenticated app shell (no backend image serving), ensuring readability of foreground content."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T04:29:33.760Z",
+  "summary": "Diff adds a new Motoko backend actor plus a frontend app with Internet Identity gating, a multi-step team-building wizard, player search/filter UI, roster review with points, and references to generated static images. However, key backend behaviors (11-player enforcement, full data model methods) and the presence of the required image files cannot be confirmed from the truncated/omitted diff.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Backend exposes query methods to list available players and fetch a user’s teams; update methods to create a team and modify its roster; all stored records are associated with the authenticated principal.",
+      "reason": "backend/main.mo is truncated before team/player APIs are shown; the diff summary does not provide evidence that getAllPlayers / getUserTeams / roster modification methods exist and correctly scope all records by caller principal.",
+      "evidence": [
+        "backend/main.mo (truncated)",
+        "frontend/src/hooks/usePlayers.ts (calls actor.getAllPlayers)",
+        "frontend/src/features/teams/ManageTeamsView.tsx (uses useGetUserTeams)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Backend rejects any roster updates that would result in a team having fewer than 11 or more than 11 players (with a clear error type/message).",
+      "reason": "Frontend shows UI gating (e.g., continue disabled unless 11 selected), but backend enforcement is not evidenced in the truncated backend/main.mo; no backend validation error type/message is visible in the provided diff excerpt.",
+      "evidence": [
+        "backend/main.mo (truncated)",
+        "frontend/src/features/teams/PlayerSelectionStep.tsx (canContinue = selectedCount === 11)",
+        "frontend/src/features/teams/RosterReview.tsx (uses useValidateTeam, truncated)"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Generated images exist under frontend/public/assets/generated with the specified filenames and are referenced via static paths.",
+      "reason": "UI references the two image paths, but the diff summary does not show the actual image files being added because omitted files include some added files; thus existence under frontend/public/assets/generated cannot be confirmed from provided evidence.",
+      "evidence": [
+        "frontend/src/components/auth/AuthGate.tsx",
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/components/layout/AppShell.tsx",
+        "File diff summary: \"Omitted files due to limits: added=15\""
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile setup flow (name prompt) and profile storage APIs (get/save profile).",
+      "reason": "BuildRequest did not ask for user profiles; only Internet Identity login and team management were required.",
+      "evidence": [
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/hooks/useCurrentUserProfile.ts",
+        "backend/main.mo (UserProfile type and profile methods shown)"
+      ]
+    },
+    {
+      "description": "Custom access control system with admin secret initialization via URL parameter (caffeineAdminToken) and role/permission checks.",
+      "reason": "BuildRequest only required Internet Identity authentication and per-principal scoping; it did not request an admin token, role system, or secret-based access-control initialization.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts (calls actor._initializeAccessControlWithSecret and reads caffeineAdminToken)",
+        "backend/main.mo (imports authorization/MixinAuthorization and AccessControl; permission checks)",
+        "frontend/src/hooks/useCurrentUserRole.ts"
+      ]
+    },
+    {
+      "description": "Budget/currency constraints and cost limits for teams/players (TEAM_COST_LIMIT, PLAYER_COST_LIMIT) and balance deduction with \"Insufficient funds\" trap.",
+      "reason": "BuildRequest did not require auction budget enforcement/cost caps; it only required base cost/value to exist in the data model.",
+      "evidence": [
+        "backend/main.mo (TEAM_COST_LIMIT/PLAYER_COST_LIMIT, balance field, addPlayer balance deduction and trap)",
+        "frontend/src/features/teams/CreateTeamStep.tsx (mentions budget of ₹100 Cr)",
+        "frontend/src/features/teams/PlayerSelectionStep.tsx (displays Balance)"
+      ]
+    },
+    {
+      "description": "Caffeine.ai promotional footer link with referral parameters.",
+      "reason": "Not requested in BuildRequest; adds unrelated branding.",
+      "evidence": [
+        "frontend/src/components/layout/AppShell.tsx (footer link to caffeine.ai)"
+      ]
+    }
+  ],
+  "confidence": 0.66,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/auth/AuthGate.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/layout/AppHeader.tsx",
+    "frontend/src/components/layout/AppShell.tsx",
+    "frontend/src/features/players/PlayerFilters.tsx",
+    "frontend/src/features/players/PlayerList.tsx",
+    "frontend/src/features/teams/CreateTeamStep.tsx",
+    "frontend/src/features/teams/ManageTeamsView.tsx",
+    "frontend/src/features/teams/PlayerSelectionStep.tsx",
+    "frontend/src/features/teams/RosterReview.tsx",
+    "frontend/src/features/teams/TeamCard.tsx",
+    "frontend/src/features/teams/TeamWizard.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useCurrentUserProfile.ts",
+    "frontend/src/hooks/useCurrentUserRole.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/usePlayers.ts",
+    "frontend/src/hooks/useScopedTeams.ts",
+    "frontend/src/hooks/useTeamMutations.ts",
+    "frontend/src/hooks/useTeamQueries.ts",
+    "frontend/src/hooks/useTeamValidation.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/utils/points.ts",
+    "frontend/src/utils/roles.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

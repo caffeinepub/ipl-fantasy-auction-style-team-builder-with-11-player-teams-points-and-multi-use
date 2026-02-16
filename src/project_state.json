@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Web app for an IPL auction/fantasy-style experience: users create their own teams, select exactly 11 members, and earn/track points based on selection rules.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Cricket-themed app logo with a bat/ball silhouette in a warm sporty palette (ipl-fantasy-logo.dim_512x512.png)\n- Stylized cricket stadium hero illustration, clean and modern, warm sporty colors (cricket-stadium-hero.dim_1600x900.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-login-and-use-the-authenticated-principal-to-scope-all-user-data-so-different-users-can-create-and-manage-their-own-teams-independently",
+      "title": "Implement Internet Identity login and use the authenticated principal to scope all user data so different users can create and manage their own teams independently.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enforce-the-rule-that-each-created-team-must-have-exactly-11-selected-members-including-clear-validation-errors-when-users-try-to-save-with-fewer-more-than-11-players",
+      "title": "Enforce the rule that each created team must have exactly 11 selected members, including clear validation errors when users try to save with fewer/more than 11 players.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-points-based-system-for-selected-players-and-team-totals-including-ui-to-display-per-player-points-and-a-computed-team-total-points-for-each-user-team",
+      "title": "Implement a points-based system for selected players and team totals, including UI to display per-player points and a computed team total points for each user team.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-action-based-easy-step-by-step-workflow-ui-1-create-a-team-name-2-browse-filter-search-players-and-select-them-3-review-roster-must-be-11-and-confirm-4-view-manage-existing-teams",
+      "title": "Build an action-based, easy step-by-step workflow UI: (1) create a team (name), (2) browse/filter/search players and select them, (3) review roster (must be 11) and confirm, (4) view/manage existing teams.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-consistent-visual-theme-for-the-app-colors-typography-spacing-and-component-styling-suitable-for-a-cricket-league-feel-and-apply-it-across-all-pages-without-using-a-blue-purple-primary-palette",
+      "title": "Provide a consistent visual theme for the app (colors, typography, spacing, and component styling) suitable for a cricket/league feel, and apply it across all pages without using a blue/purple primary palette.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-images-to-the-frontend-and-use-them-in-the-ui-e-g-app-logo-and-a-hero-background-illustration-by-placing-them-under-frontend-public-assets-generated-and-referencing-them-directly-from-the-frontend",
+      "title": "Add generated static images to the frontend and use them in the UI (e.g., app logo and a hero/background illustration) by placing them under frontend/public/assets/generated and referencing them directly from the frontend.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Build an IPL auction/fantasy-style web app workflow (easy, action-based)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Support team creation with exactly 11 selected members per team",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement a points-based selection/scoring system for chosen players",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add multi-user support so different users can create and manage their own teams",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Create a core data model for an IPL fantasy/auction-style app: players (name, role, team/club, base cost/value, and a points value or points history), user teams, and team rosters.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "IPL fantasy auction-style team builder with 11-player teams, points, and multi-user support",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

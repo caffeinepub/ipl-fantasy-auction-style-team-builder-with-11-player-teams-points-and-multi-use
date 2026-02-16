@@ -1,0 +1,144 @@
+{
+  "kind": "build_request",
+  "title": "IPL fantasy auction-style team builder with 11-player teams, points, and multi-user support",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement Internet Identity login and use the authenticated principal to scope all user data so different users can create and manage their own teams independently.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "different user can be create in our own teams"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A user can sign in with Internet Identity and see only their own teams and selections.",
+        "Signing out and signing in as a different identity shows a different set of teams (no data leakage)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create a core data model for an IPL fantasy/auction-style app: players (name, role, team/club, base cost/value, and a points value or points history), user teams, and team rosters.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "i want create web for ipl action based easy way"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes query methods to list available players and fetch a user’s teams.",
+        "Backend exposes update methods to create a team and modify its roster.",
+        "All stored records are associated with the authenticated principal."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Enforce the rule that each created team must have exactly 11 selected members, including clear validation errors when users try to save with fewer/more than 11 players.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "also 11 member only select"
+        ]
+      },
+      "acceptanceCriteria": [
+        "UI prevents finalizing/saving a roster unless it contains exactly 11 players (or shows an explicit error message).",
+        "Backend rejects any roster updates that would result in a team having fewer than 11 or more than 11 players (with a clear error type/message).",
+        "A team details view shows the current count (e.g., “8/11 selected”)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement a points-based system for selected players and team totals, including UI to display per-player points and a computed team total points for each user team.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "select certain point based"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each player displays a points value in the player list and within the team roster.",
+        "Each team displays a total points value computed from its 11 selected players.",
+        "Points totals update after roster changes (add/remove players)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Build an action-based, easy step-by-step workflow UI: (1) create a team (name), (2) browse/filter/search players and select them, (3) review roster (must be 11) and confirm, (4) view/manage existing teams.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "action based easy way"
+        ]
+      },
+      "acceptanceCriteria": [
+        "There is a clear navigation flow that guides users through team creation, player selection, and review/confirmation.",
+        "Users can search and filter players (at minimum by name and role).",
+        "Users can remove players from the roster and replace them before confirming."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Provide a consistent visual theme for the app (colors, typography, spacing, and component styling) suitable for a cricket/league feel, and apply it across all pages without using a blue/purple primary palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All primary UI surfaces (header, buttons, cards, tables/lists) follow one coherent theme.",
+        "Primary color scheme is not blue/purple-dominant.",
+        "Design is consistent across login, team creation, player selection, and team views."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add generated static images to the frontend and use them in the UI (e.g., app logo and a hero/background illustration) by placing them under frontend/public/assets/generated and referencing them directly from the frontend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated with the specified filenames.",
+        "UI references these images via static paths (no backend image serving)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Do not edit files under frontend/src/components/ui (compose them instead).",
+    "Do not edit immutable hook/bootstrapping paths listed in SYSTEM_CONTEXT (work around them via composition/usage).",
+    "All user-facing text must be in English."
+  ],
+  "nonGoals": [
+    "Real-time live IPL match integrations or automatic stat ingestion from third-party APIs.",
+    "Third-party authentication providers other than Internet Identity.",
+    "Payments, wallet integrations, or monetization features.",
+    "Real-time multiplayer auction rooms or WebSocket-based live bidding."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Cricket-themed app logo with a bat/ball silhouette in a warm sporty palette (ipl-fantasy-logo.dim_512x512.png)",
+      "Stylized cricket stadium hero illustration, clean and modern, warm sporty colors (cricket-stadium-hero.dim_1600x900.png)"
+    ],
+    "edits": []
+  }
+}

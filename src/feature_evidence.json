@@ -1,0 +1,139 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-internet-identity-login-and-use-the-authenticated-principal-to-scope-all-user-data-so-different-users-can-create-and-manage-their-own-teams-independently",
+      "featureTitle": "Implement Internet Identity login and use the authenticated principal to scope all user data so different users can create and manage their own teams independently.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/AuthGate.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/hooks/useCurrentUserProfile.ts",
+        "frontend/src/hooks/useCurrentUserRole.ts",
+        "frontend/src/hooks/useScopedTeams.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-enforce-the-rule-that-each-created-team-must-have-exactly-11-selected-members-including-clear-validation-errors-when-users-try-to-save-with-fewer-more-than-11-players",
+      "featureTitle": "Enforce the rule that each created team must have exactly 11 selected members, including clear validation errors when users try to save with fewer/more than 11 players.",
+      "files": [
+        "frontend/src/features/teams/RosterReview.tsx",
+        "frontend/src/features/teams/TeamWizard.tsx",
+        "frontend/src/hooks/useTeamValidation.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-points-based-system-for-selected-players-and-team-totals-including-ui-to-display-per-player-points-and-a-computed-team-total-points-for-each-user-team",
+      "featureTitle": "Implement a points-based system for selected players and team totals, including UI to display per-player points and a computed team total points for each user team.",
+      "files": [
+        "frontend/src/features/players/PlayerList.tsx",
+        "frontend/src/features/teams/TeamCard.tsx",
+        "frontend/src/hooks/usePlayers.ts",
+        "frontend/src/utils/points.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-an-action-based-easy-step-by-step-workflow-ui-1-create-a-team-name-2-browse-filter-search-players-and-select-them-3-review-roster-must-be-11-and-confirm-4-view-manage-existing-teams",
+      "featureTitle": "Build an action-based, easy step-by-step workflow UI: (1) create a team (name), (2) browse/filter/search players and select them, (3) review roster (must be 11) and confirm, (4) view/manage existing teams.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/features/players/PlayerFilters.tsx",
+        "frontend/src/features/teams/CreateTeamStep.tsx",
+        "frontend/src/features/teams/ManageTeamsView.tsx",
+        "frontend/src/hooks/useTeamMutations.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-a-consistent-visual-theme-for-the-app-colors-typography-spacing-and-component-styling-suitable-for-a-cricket-league-feel-and-apply-it-across-all-pages-without-using-a-blue-purple-primary-palette",
+      "featureTitle": "Provide a consistent visual theme for the app (colors, typography, spacing, and component styling) suitable for a cricket/league feel, and apply it across all pages without using a blue/purple primary palette.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-images-to-the-frontend-and-use-them-in-the-ui-e-g-app-logo-and-a-hero-background-illustration-by-placing-them-under-frontend-public-assets-generated-and-referencing-them-directly-from-the-frontend",
+      "featureTitle": "Add generated static images to the frontend and use them in the UI (e.g., app logo and a hero/background illustration) by placing them under frontend/public/assets/generated and referencing them directly from the frontend.",
+      "files": [
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/components/layout/AppShell.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
